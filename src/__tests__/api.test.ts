@@ -84,7 +84,7 @@ describe('api', () => {
 
   describe('createUser', () => {
     it('should create a user successfully', async () => {
-      const user = { userid: '4', namefirst: 'John Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' }
+      const user = { userid: '4', namefirst: 'John', namelast: 'Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' }
 
       await api.createUser(user);
 
@@ -106,7 +106,7 @@ describe('api', () => {
     });
 
     it('should handle error while creating a user', async () => {
-      const user = { id: 1, name: 'John Doe' };
+      const user = { email: 'johndoe@doe.pl', namefirst: 'John', namelast: 'Doe' };
       const error = new Error('Error creating user');
       (axios.get as jest.Mock).mockRejectedValue(error);
 

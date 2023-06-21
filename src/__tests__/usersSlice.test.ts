@@ -28,12 +28,12 @@ describe('usersSlice', () => {
   });
 
   const users = [
-    { userid: '1', namefirst: 'John Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' },
-    { userid: '2', namefirst: 'John Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' },
-    { userid: '3', namefirst: 'John Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' }
+    { userid: '1', namefirst: 'John', namelast: 'Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' },
+    { userid: '2', namefirst: 'John', namelast: 'Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' },
+    { userid: '3', namefirst: 'John', namelast: 'Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' }
     ];
 
-    const user = { userid: '4', namefirst: 'John Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' }
+    const user = { userid: '4', namefirst: 'John', namelast: 'Doe', datecreated: '32131', datemodified: '321321', email: 'sdadsada' }
 
 
 
