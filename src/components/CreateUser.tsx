@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { dispatchCreateUser } from '../redux/usersSlice';
-
-interface CreateUserForm {
-  id: number;  
-  name: string;
-  email: string;
-}
+import { createUser } from '../redux/usersSlice';
+import { User } from '../data/model'
 
 const CreateUser = () => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState<CreateUserForm>({
-    id: 0,
-    name: '',
-    email: ''
+  const [formData, setFormData] = useState<User>({
+    userid: '',
+    namefirst: '',
+    email: '',
+    datecreated: '',
+    datemodified: ''
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(dispatchCreateUser(formData));
-    setFormData({ id: 0, name: '', email: '' });
+    dispatch(createUser(formData));
+    setFormData({ userid: '', namefirst: '', email: '', datecreated: '', datemodified: '' });
     alert('User created successfully!');
   };
 
@@ -38,8 +35,8 @@ const CreateUser = () => {
           <label>Name:</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="namefirst"
+            value={formData.namefirst}
             onChange={handleChange}
             className="form-control"
           />

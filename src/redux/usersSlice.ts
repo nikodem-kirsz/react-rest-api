@@ -1,25 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchUsers, createUser } from '../api/api';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
+import api from '../api/api';
+import { User } from '../data/model'
 interface UsersState {
   loading: boolean;
   users: User[];
   error: string | null;
 }
 
-const initialState: UsersState = {
+export const initialState: UsersState = {
   loading: false,
   users: [],
   error: null
 };
 
-const usersSlice = createSlice({
+export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
@@ -61,20 +55,20 @@ export const {
 
 export default usersSlice.reducer;
 
-export const dispatchFetchUsers = (): any => async (dispatch: any) => {
+export const fetchUsers = (): any => async (dispatch: any) => {
   try {
     dispatch(getUsersStart());
-    const users = await fetchUsers()
+    const users = await api.fetchUsers()
     dispatch(getUsersSuccess(users));
   } catch (error: any) {
     dispatch(getUsersFailure(error.message));
   }
 };
 
-export const dispatchCreateUser = (user: User): any => async (dispatch: any) => {
+export const createUser = (user: User): any => async (dispatch: any) => {
   try {
     dispatch(createUserStart());
-    const users = await createUser(user)
+    const users = await api.createUser(user)
     dispatch(createUserSuccess(users));
   } catch (error: any) {
     dispatch(createUserFailure(error.message));

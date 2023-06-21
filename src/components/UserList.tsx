@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/types';
-import { dispatchFetchUsers } from '../redux/usersSlice';
+import { fetchUsers } from '../redux/usersSlice';
+import { User } from '../data/model'
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ const UserList = () => {
   debugger;
 
   useEffect(() => {
-    dispatch(dispatchFetchUsers());
+    dispatch(fetchUsers());
   }, [dispatch]);
 
   if (loading) {
@@ -34,7 +35,7 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: any) => (
+          {users.map((user: User) => (
             <tr key={user.userid}>
               <td>{user.namefirst}</td>
               <td>{user.email}</td>

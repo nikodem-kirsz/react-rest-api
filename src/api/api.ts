@@ -13,7 +13,7 @@ const sandboxUrl = 'https://api-sandbox.mysitoo.com/v2/accounts/90316/sites/1'
 const endpoints = {
     users: {
         get: `${sandboxUrl}/users.json`,
-        post: `${sandboxUrl}}/users.json`,
+        post: `${sandboxUrl}/users.json`,
     },
     products: {
         get: `${sandboxUrl}/productgroups.json`,
@@ -24,9 +24,9 @@ const endpoints = {
 const CORS_PROXY = 'http://localhost:8088'
 const LIMIT_RECOURCES = 30
 
-export const fetchProducts = async () => {
+const fetchProducts = async () => {
     try {
-        const response = await axios.get(`${CORS_PROXY}/${endpoints.products.get}?num=${LIMIT_RECOURCES}',`, {
+        const response = await axios.get(`${CORS_PROXY}/${endpoints.products.get}?num=${LIMIT_RECOURCES}`, {
             auth: {
                 username: requestConfig.username,
                 password: requestConfig.password
@@ -43,9 +43,9 @@ export const fetchProducts = async () => {
     }
 }
 
-export const fetchUsers = async () => {
+const fetchUsers = async () => {
     try {
-        const response = await axios.get(`${CORS_PROXY}/${endpoints.users.get}?num=${LIMIT_RECOURCES}',`, {
+        const response = await axios.get(`${CORS_PROXY}/${endpoints.users.get}?num=${LIMIT_RECOURCES}`, {
             auth: {
                 username: requestConfig.username,
                 password: requestConfig.password
@@ -62,9 +62,9 @@ export const fetchUsers = async () => {
     }
 }
 
-export const createUser = async (user: any) => {
+const createUser = async (user: any) => {
     try {
-        const response = await axios.post(`${CORS_PROXY}/${endpoints.users.post}`, user, {
+        const response = await axios.post(`${CORS_PROXY}/${endpoints.users.post}`, [user], {
             auth: {
                 username: requestConfig.username,
                 password: requestConfig.password
@@ -75,8 +75,13 @@ export const createUser = async (user: any) => {
                 "Authorization": requestConfig.authorization
             }
         });
+        console.log(response)
         return response?.data.items
     } catch (error: any) {
         console.log('Error: ', error)
     }
 }
+
+const api = {fetchProducts, createUser, fetchUsers}
+
+export default api
