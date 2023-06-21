@@ -51,7 +51,6 @@ const fetchProducts = async () => {
 const fetchUsers = async () => {
     try {
         const response = await axios.get(`${CORS_PROXY}/${endpoints.users.get}?num=${LIMIT_RECOURCES}`, options);
-        console.log(response)
         return response?.data.items
     } catch (error: any) {
         console.log('Error: ', error)
@@ -73,7 +72,6 @@ const deleteUser = async (users: DeleteUserRequest[]) => {
     try {
         for (let user of users) {
             const response = await axios.delete(`${CORS_PROXY}/${endpoints.users.delete}/${user.userid}.json`, options);
-            console.log(response)
             if (response?.data) {
                 deletedUsers.push(user)
             } else {
@@ -105,7 +103,6 @@ const updateUser = async (user: UpdateUserRequest) => {
                 "Authorization": requestConfig.authorization
             }
         });
-        console.log(response)
         return response?.data
     } catch (error: any) {
         console.log('Error: ', error)

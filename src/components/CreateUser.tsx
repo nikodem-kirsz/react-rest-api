@@ -15,7 +15,6 @@ const CreateUser = () => {
     const [showModal, setShowModal] = useState(false);
 
     const handleSubmit = () => {
-        debugger;
         dispatch(createUser(formData));
         setFormData({ namelast: '', namefirst: '', email: '' });
         setShowModal(false);

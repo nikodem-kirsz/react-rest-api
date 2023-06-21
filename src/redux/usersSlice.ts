@@ -62,7 +62,6 @@ export const usersSlice = createSlice({
         },
         updateUserSuccess(state, action: PayloadAction<UpdateUserRequest>) {
             state.loading = false;
-            // Find the user in the state and update its data
             state.users = state.users.map((user) =>
                 user.userid === action.payload.userid
                     ? { ...user, namefirst: action.payload.namefirst, namelast: action.payload.namelast, email: action.payload.email }
@@ -126,7 +125,7 @@ export const deleteUser = (users: DeleteUserRequest[]): any => async (dispatch: 
 export const updateUser = (user: UpdateUserRequest): any => async (dispatch: any) => {
     try {
         dispatch(updateUserStart());
-        const response = await api.updateUser(user)
+        await api.updateUser(user)
         debugger;
         dispatch(updateUserSuccess(user));
     } catch (error: any) {

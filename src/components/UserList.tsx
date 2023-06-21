@@ -8,11 +8,8 @@ import DeleteUser from './DeleteUser'
 import EditUserModal from './EditUserModal';
 
 const editButtonStyles = {
-    backgroundColor: 'transparent',
-    border: 'none',
-    // padding: 0,
-    // margin: 0,
-    // color: 'inherit'
+  backgroundColor: 'transparent',
+  border: 'none'
 }
 
 
@@ -109,7 +106,7 @@ const UserList = () => {
               <td>{timestampToDate(user.datemodified!)}</td>
               <td>
                 <button style={editButtonStyles} onClick={() => handleEditUser(user)}>
-                  <img src="/edit.svg" />
+                  <img src="/edit.svg" alt="editicon"/>
                 </button>
               </td>
             </tr>
@@ -131,7 +128,7 @@ const UserList = () => {
           <ul className="pagination">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={goToFirstPage}>
-              {'\u00AB'}
+                {'\u00AB'}
               </button>
             </li>
             {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
@@ -145,7 +142,7 @@ const UserList = () => {
             ))}
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={goToLastPage}>
-              {'\u00BB'}
+                {'\u00BB'}
               </button>
             </li>
           </ul>
@@ -153,7 +150,7 @@ const UserList = () => {
       </div>
 
       <div className="d-flex justify-content-between">
-        <DeleteUser users={selectedUsers} clearSelectedUsers={clearSelectedUsers}/>
+        <DeleteUser users={selectedUsers} clearSelectedUsers={clearSelectedUsers} />
         <CreateUser />
       </div>
 

@@ -1,14 +1,9 @@
-// EditUserModal.js
-
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { fetchUsers, updateUser, updateUserStart } from '../redux/usersSlice';
 
 const EditUserModal = ({ user, showModal, setShowModal, clearSelectedUser }: any) => {
-    console.log(user)
-    debugger;
-    
   const [formData, setFormData] = useState(user);
 
   const dispatch = useDispatch();
