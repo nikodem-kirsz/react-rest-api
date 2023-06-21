@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {CreateUserRequest, DeleteUserRequest, User} from '../data/model'
+import {CreateUserRequest, DeleteUserRequest} from '../data/model'
 
 const requestConfig = {
     username: '90316-125',
@@ -87,9 +87,9 @@ const createUser = async (user: CreateUserRequest) => {
 
 const deleteUser = async (users: DeleteUserRequest[]) => {
     let deletedUsers: DeleteUserRequest[] = []
+    debugger;
     try {
         for(let user of users) {
-            debugger;
             const response = await axios.delete(`${CORS_PROXY}/${endpoints.users.delete}/${user.userid}.json`, {
                 auth: {
                     username: requestConfig.username,

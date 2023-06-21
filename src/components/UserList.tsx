@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/types';
-import { fetchUsers, deleteUser } from '../redux/usersSlice';
-import { DeleteUserRequest, User } from '../data/model'
+import { fetchUsers } from '../redux/usersSlice';
+import { User } from '../data/model'
 import CreateUser from './CreateUser'
+import DeleteUser from './DeleteUser'
 
 
 const UserList = () => {
   const dispatch = useDispatch();
   const { loading, users, error } = useSelector((state: RootState) => state.users);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -24,29 +27,35 @@ const UserList = () => {
     }
   };
 
-  const handleDeleteUsers = () => {
-    // Dispatch delete action for selected users
-    const deleteRequest = mapUsersIdsToDeleteRequest(selectedUsers)
-    dispatch(deleteUser(deleteRequest));
-    // Clear the selected users array
-    setSelectedUsers([]);
-    dispatch(fetchUsers());
-  };
-
-  const mapUsersIdsToDeleteRequest = (selectedUsers: string[]) => {
-    let deleteUserRequest: DeleteUserRequest[] = []
-    for(let selectedUser of selectedUsers) {
-      deleteUserRequest.push({userid: selectedUser})
-    }
-    return deleteUserRequest
-  }
-
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
+  }
+
+  // Calculate pagination
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  const totalPages = Math.ceil(users.length / usersPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const goToFirstPage = () => {
+    setCurrentPage(1);
+  };
+
+  const goToLastPage = () => {
+    setCurrentPage(totalPages);
+  };
+
+  const clearSelectedUsers = () => {
+    setSelectedUsers([])
   }
 
   return (
@@ -63,7 +72,7 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: User) => (
+          {currentUsers.map((user: User) => (
             <tr key={user.userid}>
               <td>
                 <input
@@ -80,12 +89,38 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="d-flex justify-content-center">
+        <nav>
+          <ul className="pagination">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={goToFirstPage}>
+              {'\u00AB'}
+              </button>
+            </li>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+              <li
+                key={pageNumber}
+                className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                <button className="page-link">{pageNumber}</button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={goToLastPage}>
+              {'\u00BB'}
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
       <div className="d-flex justify-content-between">
-        <button className="btn btn-danger" onClick={handleDeleteUsers} disabled={selectedUsers.length === 0}>
-          Delete
-        </button>
+        <DeleteUser users={selectedUsers} clearSelectedUsers={clearSelectedUsers}/>
         <CreateUser />
       </div>
+
     </div>
   );
 };
