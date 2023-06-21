@@ -14,6 +14,12 @@ export interface CreateUserRequest {
     namelast: string;
 }
 
+export interface UpdateUserRequest {
+    email: string;
+    namefirst: string;
+    namelast: string;
+}
+
 export interface DeleteUserRequest {
     userid: string;
 }

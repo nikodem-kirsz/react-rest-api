@@ -50,12 +50,27 @@ export const usersSlice = createSlice({
 
             const deletedUserIds = action.payload.map((user) => user.userid);
             state.users = state.users.filter((user) => !deletedUserIds.includes(user.userid));
-    
+
         },
         deleteUserFailure(state, action: PayloadAction<string>) {
             state.loading = false;
             state.error = action.payload;
         },
+        editUserStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        editUserSuccess(state, action: PayloadAction<User>) {
+            state.loading = false;
+            // Find the user in the state and update its data
+            state.users = state.users.map((user) =>
+                user.userid === action.payload.userid ? action.payload : user
+            );
+        },
+        editUserFailure(state, action: PayloadAction<string>) {
+            state.loading = false;
+            state.error = action.payload;
+        }
     }
 });
 
@@ -68,7 +83,10 @@ export const {
     createUserFailure,
     deleteUserStart,
     deleteUserSuccess,
-    deleteUserFailure
+    deleteUserFailure,
+    editUserStart,
+    editUserSuccess,
+    editUserFailure
 } = usersSlice.actions;
 
 export default usersSlice.reducer;
@@ -97,7 +115,6 @@ export const deleteUser = (users: DeleteUserRequest[]): any => async (dispatch: 
     try {
         dispatch(deleteUserStart());
         const deletedUsers = await api.deleteUser(users)
-        debugger;
         dispatch(deleteUserSuccess(deletedUsers));
     } catch (error: any) {
         dispatch(deleteUserFailure(error.message));

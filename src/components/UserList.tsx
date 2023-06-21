@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/types';
 import { fetchUsers } from '../redux/usersSlice';
-import { User } from '../data/model'
+import { UpdateUserRequest, User } from '../data/model'
 import CreateUser from './CreateUser'
 import DeleteUser from './DeleteUser'
+import EditUserModal from './EditUserModal';
 
 
 const UserList = () => {
@@ -17,7 +18,15 @@ const UserList = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
+
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User>();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
 
   const handleUserSelect = (userId: string) => {
     if (selectedUsers.includes(userId)) {
@@ -69,6 +78,7 @@ const UserList = () => {
             <th>Email</th>
             <th>Date Created</th>
             <th>Date Modified</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -85,10 +95,23 @@ const UserList = () => {
               <td>{user.email}</td>
               <td>{timestampToDate(user.datecreated)}</td>
               <td>{timestampToDate(user.datemodified)}</td>
+              <td>
+                <button onClick={() => handleEditUser(user)}>
+                  <img src="/edit.svg" />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {selectedUser && (
+        <EditUserModal
+          user={selectedUser}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
 
       <div className="d-flex justify-content-center">
         <nav>
