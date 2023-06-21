@@ -1,5 +1,12 @@
 # Sitoo tech assignment
 ![Logo](https://images.teamtailor-cdn.com/images/s3/teamtailor-production/gallery_picture-v6/image_uploads/220d6762-f74f-430d-b979-aa713fc7a119/original.png)
+
+The project is developed using React.js for the frontend and Redux for state management. The UI components are designed using HTML, CSS, and Bootstrap framework to ensure a responsive and visually appealing user interface. The project leverages Axios for handling HTTP requests to the backend API.
+
+The project follows best practices in software development, such as modular component-based architecture, state management using Redux, and the use of React hooks for managing component state and lifecycle. It incorporates testing using Jest, a JavaScript testing framework, to ensure code quality and reliability.
+
+Overall, the project combines modern frontend technologies and best practices to create an efficient and user-friendly user management system for businesses. It provides a solid foundation for further development and customization based on specific business requirements.
+
 ## Available Scripts
 ### `npm start`
 

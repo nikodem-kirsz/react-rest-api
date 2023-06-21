@@ -10,10 +10,8 @@ const DeleteUser = (props: any) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleDeleteUsers = () => {
-        // Dispatch delete action for selected users
         const deleteRequest = mapUsersIdsToDeleteRequest(props.users)
         dispatch(deleteUser(deleteRequest));
-        // Clear the selected users array
         setShowDeleteModal(false);
         props.clearSelectedUsers();
         dispatch(fetchUsers());
