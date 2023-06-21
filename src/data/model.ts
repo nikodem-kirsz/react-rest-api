@@ -1,9 +1,9 @@
 export interface User {
     userid: string;
-    email: string;
+    email?: string;
     namefirst: string;
-    datecreated: string;
-    datemodified: string;
+    datecreated?: string;
+    datemodified?: string;
     namelast?: string;
     company?: string;
 }
@@ -15,9 +15,13 @@ export interface CreateUserRequest {
 }
 
 export interface UpdateUserRequest {
-    email: string;
+    userid: string;
+    email?: string;
     namefirst: string;
-    namelast: string;
+    datecreated?: string;
+    datemodified?: string;
+    namelast?: string;
+    company?: string;
 }
 
 export interface DeleteUserRequest {

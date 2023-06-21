@@ -18,7 +18,6 @@ const CreateUser = () => {
         debugger;
         dispatch(createUser(formData));
         setFormData({ namelast: '', namefirst: '', email: '' });
-        alert('User created successfully!');
         setShowModal(false);
         dispatch(fetchUsers())
     };

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import api from '../api/api';
-import { CreateUserRequest, DeleteUserRequest, User } from '../data/model'
+import { CreateUserRequest, DeleteUserRequest, UpdateUserRequest, User } from '../data/model'
 interface UsersState {
     loading: boolean;
     users: User[];
@@ -56,18 +56,20 @@ export const usersSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        editUserStart(state) {
+        updateUserStart(state) {
             state.loading = true;
             state.error = null;
         },
-        editUserSuccess(state, action: PayloadAction<User>) {
+        updateUserSuccess(state, action: PayloadAction<UpdateUserRequest>) {
             state.loading = false;
             // Find the user in the state and update its data
             state.users = state.users.map((user) =>
-                user.userid === action.payload.userid ? action.payload : user
+                user.userid === action.payload.userid
+                    ? { ...user, namefirst: action.payload.namefirst, namelast: action.payload.namelast, email: action.payload.email }
+                    : user
             );
         },
-        editUserFailure(state, action: PayloadAction<string>) {
+        updateUserFailure(state, action: PayloadAction<string>) {
             state.loading = false;
             state.error = action.payload;
         }
@@ -84,9 +86,9 @@ export const {
     deleteUserStart,
     deleteUserSuccess,
     deleteUserFailure,
-    editUserStart,
-    editUserSuccess,
-    editUserFailure
+    updateUserStart,
+    updateUserSuccess,
+    updateUserFailure
 } = usersSlice.actions;
 
 export default usersSlice.reducer;
@@ -118,6 +120,17 @@ export const deleteUser = (users: DeleteUserRequest[]): any => async (dispatch: 
         dispatch(deleteUserSuccess(deletedUsers));
     } catch (error: any) {
         dispatch(deleteUserFailure(error.message));
+    }
+};
+
+export const updateUser = (user: UpdateUserRequest): any => async (dispatch: any) => {
+    try {
+        dispatch(updateUserStart());
+        const response = await api.updateUser(user)
+        debugger;
+        dispatch(updateUserSuccess(user));
+    } catch (error: any) {
+        dispatch(updateUserFailure(error.message));
     }
 };
 

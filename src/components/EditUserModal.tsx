@@ -3,9 +3,12 @@
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { editUserStart } from '../redux/usersSlice';
+import { fetchUsers, updateUser, updateUserStart } from '../redux/usersSlice';
 
-const EditUserModal = ({ user, showModal, setShowModal }: any) => {
+const EditUserModal = ({ user, showModal, setShowModal, clearSelectedUser }: any) => {
+    console.log(user)
+    debugger;
+    
   const [formData, setFormData] = useState(user);
 
   const dispatch = useDispatch();
@@ -16,8 +19,11 @@ const EditUserModal = ({ user, showModal, setShowModal }: any) => {
   };
 
   const handleSubmit = () => {
-    dispatch(editUserStart(formData));
+    dispatch(updateUserStart(formData));
+    dispatch(updateUser(formData))
     setShowModal(false);
+    clearSelectedUser();
+    dispatch(fetchUsers())
   };
 
   return (

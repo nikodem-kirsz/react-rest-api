@@ -2,10 +2,18 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/types';
 import { fetchUsers } from '../redux/usersSlice';
-import { UpdateUserRequest, User } from '../data/model'
+import { User } from '../data/model'
 import CreateUser from './CreateUser'
 import DeleteUser from './DeleteUser'
 import EditUserModal from './EditUserModal';
+
+const editButtonStyles = {
+    backgroundColor: 'transparent',
+    border: 'none',
+    // padding: 0,
+    // margin: 0,
+    // color: 'inherit'
+}
 
 
 const UserList = () => {
@@ -67,6 +75,10 @@ const UserList = () => {
     setSelectedUsers([])
   }
 
+  const clearSelectedUser = () => {
+    setSelectedUser(undefined)
+  }
+
   return (
     <div>
       <h3>User List</h3>
@@ -93,10 +105,10 @@ const UserList = () => {
               </td>
               <td>{user.namefirst}</td>
               <td>{user.email}</td>
-              <td>{timestampToDate(user.datecreated)}</td>
-              <td>{timestampToDate(user.datemodified)}</td>
+              <td>{timestampToDate(user.datecreated!)}</td>
+              <td>{timestampToDate(user.datemodified!)}</td>
               <td>
-                <button onClick={() => handleEditUser(user)}>
+                <button style={editButtonStyles} onClick={() => handleEditUser(user)}>
                   <img src="/edit.svg" />
                 </button>
               </td>
@@ -110,6 +122,7 @@ const UserList = () => {
           user={selectedUser}
           showModal={showModal}
           setShowModal={setShowModal}
+          clearSelectedUser={clearSelectedUser}
         />
       )}
 
