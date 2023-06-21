@@ -7,3 +7,13 @@ export interface User {
     namelast?: string;
     company?: string;
 }
+
+export interface CreateUserRequest {
+    email: string;
+    namefirst: string;
+    namelast: string;
+}
+
+export interface DeleteUserRequest {
+    userid: string;
+}

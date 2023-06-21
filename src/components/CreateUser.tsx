@@ -1,62 +1,66 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createUser } from '../redux/usersSlice';
-import { User } from '../data/model'
+import { createUser, fetchUsers } from '../redux/usersSlice';
+import { CreateUserRequest } from '../data/model';
+import { Button, Modal, Form } from 'react-bootstrap';
 
 const CreateUser = () => {
-  const dispatch = useDispatch();
-  const [formData, setFormData] = useState<User>({
-    userid: '',
-    namefirst: '',
-    email: '',
-    datecreated: '',
-    datemodified: ''
-  });
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    dispatch(createUser(formData));
-    setFormData({ userid: '', namefirst: '', email: '', datecreated: '', datemodified: '' });
-    alert('User created successfully!');
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value
+    const dispatch = useDispatch();
+    const [formData, setFormData] = useState<CreateUserRequest>({
+        email: '',
+        namefirst: '',
+        namelast: '',
     });
-  };
 
-  return (
-    <div>
-      <h3>Create User</h3>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Name:</label>
-          <input
-            type="text"
-            name="namefirst"
-            value={formData.namefirst}
-            onChange={handleChange}
-            className="form-control"
-          />
+    const [showModal, setShowModal] = useState(false);
+
+    const handleSubmit = () => {
+        debugger;
+        dispatch(createUser(formData));
+        setFormData({ namelast: '', namefirst: '', email: '' });
+        alert('User created successfully!');
+        setShowModal(false);
+        dispatch(fetchUsers())
+    };
+
+    const handleChange = (event: React.ChangeEvent<any>) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
+    };
+
+    return (
+        <div>
+            <Button variant="primary" onClick={() => setShowModal(true)}>Create User</Button>
+
+            <Modal centered show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create User</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>First name</Form.Label>
+                            <Form.Control name="namefirst" type="text" value={formData.namefirst} onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control name="namelast" type="text" value={formData.namelast} onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control name="email" type="email" value={formData.email} onChange={handleChange} />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer className="justify-content-between">
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+                    <Button variant="primary" onClick={() => handleSubmit()}>Create</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
-        <div className="form-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="form-control"
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Create
-        </button>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default CreateUser;

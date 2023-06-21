@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {CreateUserRequest, DeleteUserRequest, User} from '../data/model'
 
 const requestConfig = {
     username: '90316-125',
@@ -14,6 +15,7 @@ const endpoints = {
     users: {
         get: `${sandboxUrl}/users.json`,
         post: `${sandboxUrl}/users.json`,
+        delete: `${sandboxUrl}/users`,
     },
     products: {
         get: `${sandboxUrl}/productgroups.json`,
@@ -56,13 +58,14 @@ const fetchUsers = async () => {
                 "Authorization": requestConfig.authorization
             }
         });
+        console.log(response)
         return response?.data.items
     } catch (error: any) {
         console.log('Error: ', error)
     }
 }
 
-const createUser = async (user: any) => {
+const createUser = async (user: CreateUserRequest) => {
     try {
         const response = await axios.post(`${CORS_PROXY}/${endpoints.users.post}`, [user], {
             auth: {
@@ -76,12 +79,43 @@ const createUser = async (user: any) => {
             }
         });
         console.log(response)
-        return response?.data.items
+        return response?.data
     } catch (error: any) {
         console.log('Error: ', error)
     }
 }
 
-const api = {fetchProducts, createUser, fetchUsers}
+const deleteUser = async (users: DeleteUserRequest[]) => {
+    let deletedUsers: DeleteUserRequest[] = []
+    try {
+        for(let user of users) {
+            debugger;
+            const response = await axios.delete(`${CORS_PROXY}/${endpoints.users.delete}/${user.userid}.json`, {
+                auth: {
+                    username: requestConfig.username,
+                    password: requestConfig.password
+                },
+                headers: {
+                    Accept: requestConfig.acceptType,
+                    "Content-Type": requestConfig.contentType,
+                    "Authorization": requestConfig.authorization
+                }
+            });
+            console.log(response)
+            if (response?.data) {
+                deletedUsers.push(user)
+            } else {
+                console.log(`Cannot delete user with id ${user.userid}`)
+            }
+        }
+        return deletedUsers
+        
+    } catch (error: any) {
+        console.log('Error: ', error)
+        return []
+    }
+}
+
+const api = {fetchProducts, createUser, fetchUsers, deleteUser}
 
 export default api

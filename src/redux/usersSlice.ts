@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import api from '../api/api';
-import { User } from '../data/model'
+import { CreateUserRequest, DeleteUserRequest, User } from '../data/model'
 interface UsersState {
   loading: boolean;
   users: User[];
@@ -40,7 +40,21 @@ export const usersSlice = createSlice({
     createUserFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
+    },
+    deleteUserStart(state) {
+        state.loading = true;
+        state.error = null;
+    },
+      deleteUserSuccess(state, action: PayloadAction<DeleteUserRequest[]>) {
+        state.loading = false;
+        for(let user of action.payload) {
+            state.users.filter((savedUser) => savedUser.userid !== user.userid);
+        }
+      },
+      deleteUserFailure(state, action: PayloadAction<string>) {
+        state.loading = false;
+        state.error = action.payload;
+      },
   }
 });
 
@@ -50,7 +64,10 @@ export const {
   getUsersFailure,
   createUserStart,
   createUserSuccess,
-  createUserFailure
+  createUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure
 } = usersSlice.actions;
 
 export default usersSlice.reducer;
@@ -65,7 +82,7 @@ export const fetchUsers = (): any => async (dispatch: any) => {
   }
 };
 
-export const createUser = (user: User): any => async (dispatch: any) => {
+export const createUser = (user: CreateUserRequest): any => async (dispatch: any) => {
   try {
     dispatch(createUserStart());
     const users = await api.createUser(user)
@@ -74,3 +91,14 @@ export const createUser = (user: User): any => async (dispatch: any) => {
     dispatch(createUserFailure(error.message));
   }
 };
+
+export const deleteUser = (users: DeleteUserRequest[]): any => async (dispatch: any) => {
+    try {
+      dispatch(deleteUserStart());
+      const deletedUsers = await api.deleteUser(users)
+      dispatch(deleteUserSuccess(deletedUsers));
+    } catch (error: any) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
